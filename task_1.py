@@ -18,7 +18,7 @@ class Phone(Field):
         super().__init__(self.__is_valid_number(number))
     
     def __is_valid_number(self, number):
-        if len(number) != 10 and not number.isdigit():
+        if len(number) != 10 or not number.isdigit():
             raise ValueError("Wrong phone number")
         
         return number
@@ -56,6 +56,15 @@ class Record:
                 return phone
             
         return None
+    
+
+    def remove_phone(self, number):
+        for phone in self.phones:
+            if phone.value == number:
+                self.phones.remove(phone)
+                return
+        
+        raise ValueError("No such phone in user phones")
 
         
 
@@ -108,7 +117,11 @@ for name, record in book.data.items():
 john = book.find("John")
 john.edit_phone("1234567890", "1112223333")
 
+
 print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555
+john.remove_phone('5555555555')
+
+print(john)
 
 # Пошук конкретного телефону у записі John
 found_phone = john.find_phone("5555555555")
