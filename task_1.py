@@ -14,21 +14,17 @@ class Name(Field):
 
 
 class Phone(Field):
-    def __init__(self, number):
-        if not self.__is_valid_number(number):
-            raise ValueError("Wrong phone number")  
-          
-        super().__init__(number)
+    def __init__(self, number):   
+        super().__init__(self.__is_valid_number(number))
     
-
     def __is_valid_number(self, number):
-        return len(number) == 10 and number.isdigit()
+        if len(number) != 10 and not number.isdigit():
+            raise ValueError("Wrong phone number")
+        
+        return number
     
     def update_number(self, new_number):
-        if not self.__is_valid_number(new_number):
-            raise ValueError("Wrong phone number")
-
-        self.value = new_number
+        self.value = self.__is_valid_number(new_number)
 
 
 class Record:
